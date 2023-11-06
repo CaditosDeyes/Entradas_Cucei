@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Text, TextInput, TouchableOpacity, View, Image, StyleSheet, Dimensions } from 'react-native';
+import { Modal, Text, TextInput, TouchableOpacity, View, Image, StyleSheet, Dimensions, Alert } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -22,10 +22,21 @@ export default class Inscripcion extends Component {
 
         const cierraModalCrearCuenta = () => {
             this.setState({ modalVentanaCrearCuenta: false });
-        }
-
-        const cancelarModalCrearCuenta = () => {
-            this.setState({ modalVentanaCrearCuenta: false });
+            // Código para enviar y recibir datos del servidor
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    // Acción típica a realizar cuando el documento está listo
+                    console.log(xhttp.responseText);
+                    if (xhttp.responseText === "1") {
+                        Alert.alert("Cuenta creada correctamente");
+                    } else {
+                        Alert.alert("Error, inténtelo de nuevo");
+                    }
+                }
+            };
+            xhttp.open("GET", "https://spousal-probabiliti.000webhostapp.com/datos.php?nombre=" + this.state.nombre + "&correo=" + this.state.correo + "&password=" + this.state.password, true);
+            xhttp.send();
         }
 
         const iniciarSesion = () => {
@@ -34,10 +45,21 @@ export default class Inscripcion extends Component {
 
         const cierraModalVentanaIniciarSesion = () => {
             this.setState({ modalVentanaIniciarSesion: false });
-        }
-
-        const cancelarModalIniciarSesion = () => {
-            this.setState({ modalVentanaIniciarSesion: false });
+            // Código para enviar y recibir datos del servidor
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    // Acción típica a realizar cuando el documento está listo
+                    console.log(xhttp.responseText);
+                    if (xhttp.responseText === "1") {
+                        Alert.alert("Sesión Iniciada Correctamente");
+                    } else {
+                        Alert.alert("Error, inténtelo de nuevo");
+                    }
+                }
+            };
+            xhttp.open("GET", "https://spousal-probabiliti.000webhostapp.com/datos.php?nombre=" + this.state.nombre + "&correo=" + this.state.correo + "&password=" + this.state.password, true);
+            xhttp.send();
         }
 
         return (
@@ -101,31 +123,49 @@ export default class Inscripcion extends Component {
                         backgroundColor: "blue",
                         borderRadius: 40,
                     }}>
-                        <Text style={styles.textFormulario}>Nombre:</Text>
+                        <Text style={{
+                            fontSize: 20,
+                            marginLeft: 20,
+                            color: "white",
+                        }}>Nombre:</Text>
                         <TextInput
                             style={styles.textInputCrearCuenta}
                             onChangeText={nombre => this.setState({ nombre })}>
                         </TextInput>
 
-                        <Text style={styles.textFormulario}>Correo:</Text>
+                        <Text style={{
+                            fontSize: 20,
+                            marginLeft: 20,
+                            color: "white",
+                        }}>Correo:</Text>
                         <TextInput
                             style={styles.textInputCrearCuenta}
                             onChangeText={correo => this.setState({ correo })}>
                         </TextInput>
 
-                        <Text style={styles.textFormulario}>Password:</Text>
+                        <Text style={{
+                            fontSize: 20,
+                            marginLeft: 20,
+                            color: "white",
+                        }}>Password:</Text>
                         <TextInput
                             style={styles.textInputCrearCuenta}
                             onChangeText={password => this.setState({ password })}>
                         </TextInput>
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.cancelarButton} onPress={cancelarModalCrearCuenta}>
-                                <Text style={styles.buttonText}>Cancelar</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.aceptarButton} onPress={cierraModalCrearCuenta}>
-                                <Text style={styles.buttonText}>Aceptar</Text>
-                            </TouchableOpacity>
-                        </View>
+                        <TouchableOpacity style={{
+                            borderWidth: 2,
+                            width: 200,
+                            height: 50,
+                            marginLeft: 60,
+                            borderRadius: 40,
+                        }} onPress={cierraModalCrearCuenta}>
+                            <Text style={{
+                                fontSize: 20,
+                                textAlign: "center",
+                                marginTop: 10,
+                                color: "white",
+                            }}>Aceptar</Text>
+                        </TouchableOpacity>
                     </View>
                 </Modal>
 
@@ -135,40 +175,57 @@ export default class Inscripcion extends Component {
                     animationType="slide"
                 >
                     <View style={{
-                        borderWidth: 1,
-                        width: 400,
+                        borderWidth: 2,
+                        width: 300,
                         height: 300,
-                        marginLeft: 5,
-                        marginTop: 380,
-                        //marginEnd: 200,
-                        backgroundColor: "blue",
+                        marginLeft: 50,
+                        marginTop: 300,
+                        backgroundColor: "yellow",
                         borderRadius: 40,
                     }}>
-                        <Text style={styles.textFormulario}>Nombre:</Text>
+                        <Text style={{
+                            fontSize: 20,
+                            marginLeft: 20,
+                            color: "black",
+                        }}>Nombre:</Text>
                         <TextInput
                             style={styles.textInputIniciarSesion}
                             onChangeText={nombre => this.setState({ nombre })} >
                         </TextInput>
 
-                        <Text style={styles.textFormulario}>Correo:</Text>
+                        <Text style={{
+                            fontSize: 20,
+                            marginLeft: 20,
+                            color: "black",
+                        }}>Correo:</Text>
                         <TextInput
                             style={styles.textInputIniciarSesion}
                             onChangeText={correo => this.setState({ correo })}>
                         </TextInput>
 
-                        <Text style={styles.textFormulario}>Password:</Text>
+                        <Text style={{
+                            fontSize: 20,
+                            marginLeft: 20,
+                            color: "black",
+                        }}>Password:</Text>
                         <TextInput
                             style={styles.textInputIniciarSesion}
                             onChangeText={password => this.setState({ password })} >
                         </TextInput>
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.cancelarButton} onPress={cancelarModalIniciarSesion}>
-                                <Text style={styles.buttonText}>Cancelar</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.aceptarButton} onPress={cierraModalVentanaIniciarSesion}>
-                                <Text style={styles.buttonText}>Aceptar</Text>
-                            </TouchableOpacity>
-                        </View>
+                        <TouchableOpacity style={{
+                            borderWidth: 2,
+                            width: 200,
+                            height: 50,
+                            marginLeft: 60,
+                            borderRadius: 40,
+                        }} onPress={cierraModalVentanaIniciarSesion}>
+                            <Text style={{
+                                fontSize: 20,
+                                textAlign: "center",
+                                marginTop: 10,
+                                color: "black",
+                            }}>Aceptar</Text>
+                        </TouchableOpacity>
                     </View>
                 </Modal>
             </View>
@@ -178,43 +235,15 @@ export default class Inscripcion extends Component {
 
 const styles = StyleSheet.create({
     logoCUCEI: {
+        width: windowWidth,
         height: 390,
+        marginTop: 0,
+        marginLeft: 0,
     },
     textInputCrearCuenta: {
         color: 'white',
     },
     textInputIniciarSesion: {
         color: 'white',
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginTop: 20,
-    },
-    buttonText: {
-        fontSize: 20,
-        textAlign: 'center',
-        marginTop: 10,
-        color: 'white',
-    },
-    cancelarButton: {
-        backgroundColor: 'red',
-        width: 120,
-        height: 50,
-        borderRadius: 40,
-        marginTop: -35,
-    },
-    aceptarButton: {
-        backgroundColor: 'blue',
-        width: 120,
-        height: 50,
-        borderRadius: 40,
-        marginTop: -35,
-    },
-    textFormulario:{
-        fontSize: 20,
-        marginTop: 10,
-        marginLeft: 20,
-        color: "white",
     },
 });
