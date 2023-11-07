@@ -301,6 +301,6 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     textInputIniciarSesion: {
-        color: 'white',
+        color: 'black',
     },
 });
