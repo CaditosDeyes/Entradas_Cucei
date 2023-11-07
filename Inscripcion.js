@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Text, TextInput, TouchableOpacity, View, Image, StyleSheet, Dimensions, Alert } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export default class Inscripcion extends Component {
     constructor(props) {
@@ -39,6 +40,10 @@ export default class Inscripcion extends Component {
             xhttp.send();
         }
 
+        const cancelarModalCrearCuenta = () => {
+            this.setState({ modalVentanaCrearCuenta: false });
+        }
+
         const iniciarSesion = () => {
             this.setState({ modalVentanaIniciarSesion: true });
         }
@@ -60,6 +65,10 @@ export default class Inscripcion extends Component {
             };
             xhttp.open("GET", "https://spousal-probabiliti.000webhostapp.com/datos.php?nombre=" + this.state.nombre + "&correo=" + this.state.correo + "&password=" + this.state.password, true);
             xhttp.send();
+        }
+
+        const cancelarModalIniciarSesion = () => {
+            this.setState({ modalVentanaIniciarSesion: false });
         }
 
         return (
@@ -115,57 +124,81 @@ export default class Inscripcion extends Component {
                     animationType="slide"
                 >
                     <View style={{
-                        borderWidth: 2,
-                        width: 300,
-                        height: 300,
-                        marginLeft: 55,
-                        marginTop: 350,
-                        backgroundColor: "blue",
-                        borderRadius: 40,
+                        flex: 1,
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        justifyContent: 'center',
+                        alignItems: 'center',
                     }}>
-                        <Text style={{
-                            fontSize: 20,
-                            marginLeft: 20,
-                            color: "white",
-                        }}>Nombre:</Text>
-                        <TextInput
-                            style={styles.textInputCrearCuenta}
-                            onChangeText={nombre => this.setState({ nombre })}>
-                        </TextInput>
-
-                        <Text style={{
-                            fontSize: 20,
-                            marginLeft: 20,
-                            color: "white",
-                        }}>Correo:</Text>
-                        <TextInput
-                            style={styles.textInputCrearCuenta}
-                            onChangeText={correo => this.setState({ correo })}>
-                        </TextInput>
-
-                        <Text style={{
-                            fontSize: 20,
-                            marginLeft: 20,
-                            color: "white",
-                        }}>Password:</Text>
-                        <TextInput
-                            style={styles.textInputCrearCuenta}
-                            onChangeText={password => this.setState({ password })}>
-                        </TextInput>
-                        <TouchableOpacity style={{
-                            borderWidth: 2,
-                            width: 200,
-                            height: 50,
-                            marginLeft: 60,
+                        <View style={{
+                            width: 300,
+                            height: 300,
+                            backgroundColor: "blue",
                             borderRadius: 40,
-                        }} onPress={cierraModalCrearCuenta}>
+                        }}>
                             <Text style={{
                                 fontSize: 20,
-                                textAlign: "center",
-                                marginTop: 10,
+                                marginLeft: 20,
                                 color: "white",
-                            }}>Aceptar</Text>
-                        </TouchableOpacity>
+                            }}>Nombre:</Text>
+                            <TextInput
+                                style={styles.textInputCrearCuenta}
+                                onChangeText={nombre => this.setState({ nombre })}
+                                underlineColorAndroid="white" // Resalta el borde del campo de entrada
+                            />
+                            <Text style={{
+                                fontSize: 20,
+                                marginLeft: 20,
+                                color: "white",
+                            }}>Correo:</Text>
+                            <TextInput
+                                style={styles.textInputCrearCuenta}
+                                onChangeText={correo => this.setState({ correo })}
+                                underlineColorAndroid="white" // Resalta el borde del campo de entrada
+                            />
+                            <Text style={{
+                                fontSize: 20,
+                                marginLeft: 20,
+                                color: "white",
+                            }}>Password:</Text>
+                            <TextInput
+                                style={styles.textInputCrearCuenta}
+                                onChangeText={password => this.setState({ password })}
+                                secureTextEntry={true}
+                                underlineColorAndroid="white" // Resalta el borde del campo de entrada
+                            />
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-around',
+                                marginTop: 10,
+                            }}>
+                                <TouchableOpacity style={{
+                                    width: 100,
+                                    height: 50,
+                                    borderRadius: 40,
+                                    backgroundColor: 'white',
+                                }} onPress={cancelarModalCrearCuenta}>
+                                    <Text style={{
+                                        fontSize: 20,
+                                        textAlign: "center",
+                                        marginTop: 10,
+                                        color: "blue",
+                                    }}>Cancelar</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{
+                                    width: 100,
+                                    height: 50,
+                                    borderRadius: 40,
+                                    backgroundColor: 'white',
+                                }} onPress={cierraModalCrearCuenta}>
+                                    <Text style={{
+                                        fontSize: 20,
+                                        textAlign: "center",
+                                        marginTop: 10,
+                                        color: "blue",
+                                    }}>Aceptar</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </View>
                 </Modal>
 
@@ -175,57 +208,81 @@ export default class Inscripcion extends Component {
                     animationType="slide"
                 >
                     <View style={{
-                        borderWidth: 2,
-                        width: 300,
-                        height: 300,
-                        marginLeft: 50,
-                        marginTop: 300,
-                        backgroundColor: "yellow",
-                        borderRadius: 40,
+                        flex: 1,
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        justifyContent: 'center',
+                        alignItems: 'center',
                     }}>
-                        <Text style={{
-                            fontSize: 20,
-                            marginLeft: 20,
-                            color: "black",
-                        }}>Nombre:</Text>
-                        <TextInput
-                            style={styles.textInputIniciarSesion}
-                            onChangeText={nombre => this.setState({ nombre })} >
-                        </TextInput>
-
-                        <Text style={{
-                            fontSize: 20,
-                            marginLeft: 20,
-                            color: "black",
-                        }}>Correo:</Text>
-                        <TextInput
-                            style={styles.textInputIniciarSesion}
-                            onChangeText={correo => this.setState({ correo })}>
-                        </TextInput>
-
-                        <Text style={{
-                            fontSize: 20,
-                            marginLeft: 20,
-                            color: "black",
-                        }}>Password:</Text>
-                        <TextInput
-                            style={styles.textInputIniciarSesion}
-                            onChangeText={password => this.setState({ password })} >
-                        </TextInput>
-                        <TouchableOpacity style={{
-                            borderWidth: 2,
-                            width: 200,
-                            height: 50,
-                            marginLeft: 60,
+                        <View style={{
+                            width: 300,
+                            height: 300,
+                            backgroundColor: "yellow",
                             borderRadius: 40,
-                        }} onPress={cierraModalVentanaIniciarSesion}>
+                        }}>
                             <Text style={{
                                 fontSize: 20,
-                                textAlign: "center",
-                                marginTop: 10,
+                                marginLeft: 20,
                                 color: "black",
-                            }}>Aceptar</Text>
-                        </TouchableOpacity>
+                            }}>Nombre:</Text>
+                            <TextInput
+                                style={styles.textInputIniciarSesion}
+                                onChangeText={nombre => this.setState({ nombre })}
+                                underlineColorAndroid="black" // Resalta el borde del campo de entrada
+                            />
+                            <Text style={{
+                                fontSize: 20,
+                                marginLeft: 20,
+                                color: "black",
+                            }}>Correo:</Text>
+                            <TextInput
+                                style={styles.textInputIniciarSesion}
+                                onChangeText={correo => this.setState({ correo })}
+                                underlineColorAndroid="black" // Resalta el borde del campo de entrada
+                            />
+                            <Text style={{
+                                fontSize: 20,
+                                marginLeft: 20,
+                                color: "black",
+                            }}>Password:</Text>
+                            <TextInput
+                                style={styles.textInputIniciarSesion}
+                                onChangeText={password => this.setState({ password })}
+                                secureTextEntry={true}
+                                underlineColorAndroid="black" // Resalta el borde del campo de entrada
+                            />
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-around',
+                                marginTop: 10,
+                            }}>
+                                <TouchableOpacity style={{
+                                    width: 100,
+                                    height: 50,
+                                    borderRadius: 40,
+                                    backgroundColor: 'white',
+                                }} onPress={cancelarModalIniciarSesion}>
+                                    <Text style={{
+                                        fontSize: 20,
+                                        textAlign: "center",
+                                        marginTop: 10,
+                                        color: "blue",
+                                    }}>Cancelar</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{
+                                    width: 100,
+                                    height: 50,
+                                    borderRadius: 40,
+                                    backgroundColor: 'white',
+                                }} onPress={cierraModalVentanaIniciarSesion}>
+                                    <Text style={{
+                                        fontSize: 20,
+                                        textAlign: "center",
+                                        marginTop: 10,
+                                        color: "blue",
+                                    }}>Aceptar</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </View>
                 </Modal>
             </View>
