@@ -1,21 +1,13 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import Login from './Inscripcion';
+import { View } from 'react-native';
+import Inicio from './Inicio';
 
 const App = () => {
   return (
-    <View style={styles.container}>
-      <Login />
+    <View>
+      <Inicio />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    //flex: 0,
-    //justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default App;
