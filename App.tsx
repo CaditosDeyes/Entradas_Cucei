@@ -1,13 +1,20 @@
 import React from 'react';
-import { View } from 'react-native';
-import Inicio from './Inicio';
+import { SafeAreaView, View, StyleSheet } from 'react-native';
+import MainStack from './MainStack';
 
-const App = () => {
+function App() {
   return (
-    <View>
-      <Inicio />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <MainStack />
+    </SafeAreaView>
   );
-};
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff', // Puedes ajustar el color de fondo según tus preferencias
+  },
+});
 
 export default App;

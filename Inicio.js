@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Text, TouchableOpacity, View, Image, Dimensions } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 export default class Inicio extends Component {
     constructor(props) {
@@ -10,10 +9,12 @@ export default class Inicio extends Component {
     }
 
     ir_a_crear_cita = () => {
+        console.log("Presionaste el botón 'Crear Cita'");
         this.props.navigation.navigate('CrearCita');
     }
 
     ir_a_ver_cita = () => {
+        console.log("Presionaste el botón 'Ver Cita'");
         this.props.navigation.navigate('VerCita');
     }
 

@@ -1,20 +1,23 @@
 import React from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import Inicio from './Inicio';
 import CrearCita from './CrearCita';
-import VerCita from './VerCita';
-const Stack = createStackNavigator();
+//import VerCita from './VerCita';
 
-export default function App() {
+const Stack = createNativeStackNavigator();
+
+const MainStack = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Inicio">
+      <Stack.Navigator screenOptions={{headerShown :false}}>
         <Stack.Screen name="Inicio" component={Inicio} />
         <Stack.Screen name="CrearCita" component={CrearCita} />
-        <Stack.Screen name="VerCita" component={VerCita} />
+        
         {/* Puedes agregar más pantallas aquí */}
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
+
+export default MainStack;
