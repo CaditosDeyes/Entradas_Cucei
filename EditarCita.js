@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
-export default class CrearCita extends Component {
+export default class EditarCita extends Component {
     constructor(props) {
         super(props);
+        // Inicializa el estado con los datos existentes de la cita que estás editando
         this.state = {
             nombre: '',
             apellido: '',
-            marcaCarro: '',
-            placasCarro: '',
-            colorCarro: '',
-            horaEntrada: '',
-            diaEntrada: '',
-            puertaEntrada: '',
-            moduloVisita: '',
+            marcaVehiculo: '',
+            placasVehiculo: '',
+            colorVehiculo: '',
+            horaVisita: '',
+            diaVisita: '',
+            puerta: '',
+            moduloDirigido: '',
         };
     }
+
+    // Métodos para manejar cambios en los campos de edición
 
     handleNombreChange = (text) => {
         this.setState({ nombre: text });
@@ -25,66 +28,41 @@ export default class CrearCita extends Component {
         this.setState({ apellido: text });
     }
 
-    handleMarcaCarroChange = (text) => {
-        this.setState({ marcaCarro: text });
+    handleMarcaVehiculoChange = (text) => {
+        this.setState({ marcaVehiculo: text });
     }
 
-    handlePlacasCarroChange = (text) => {
-        this.setState({ placasCarro: text });
+    handlePlacasVehiculoChange = (text) => {
+        this.setState({ placasVehiculo: text });
     }
 
-    handleColorCarroChange = (text) => {
-        this.setState({ colorCarro: text });
+    handleColorVehiculoChange = (text) => {
+        this.setState({ colorVehiculo: text });
     }
 
-    handleHoraEntradaChange = (text) => {
-        this.setState({ horaEntrada: text });
+    handleHoraVisitaChange = (text) => {
+        this.setState({ horaVisita: text });
     }
 
-    handleDiaEntradaChange = (text) => {
-        this.setState({ diaEntrada: text });
+    handleDiaVisitaChange = (text) => {
+        this.setState({ diaVisita: text });
     }
 
-    handlePuertaEntradaChange = (text) => {
-        this.setState({ puertaEntrada: text });
+    handlePuertaChange = (text) => {
+        this.setState({ puerta: text });
     }
 
-    handleModuloVisitaChange = (text) => {
-        this.setState({ moduloVisita: text });
+    handleModuloDirigidoChange = (text) => {
+        this.setState({ moduloDirigido: text });
     }
 
-    handleSubmit = async () => {
-        const queryParams = new URLSearchParams({
-            nombre: this.state.nombre,
-            apellido: this.state.apellido,
-            marcaCarro: this.state.marcaCarro,
-            placasCarro: this.state.placasCarro,
-            colorCarro: this.state.colorCarro,
-            horaEntrada: this.state.horaEntrada,
-            diaEntrada: this.state.diaEntrada,
-            puertaEntrada: this.state.puertaEntrada,
-            moduloVisita: this.state.moduloVisita,
-        }).toString();
-        
-
-        try {
-            const response = await fetch(`https://spousal-probabiliti.000webhostapp.com/datos.php?${queryParams}`);
-            const data = await response.text();
-
-            console.log(data);
-
-            if (data === "1") {
-                Alert.alert("Cita creada correctamente");
-            } else {
-                Alert.alert("Error al crear la cita, intentelo de nuevo");
-            }
-        } catch (error) {
-            console.error('Error de red:', error);
-            Alert.alert('Error de red, por favor revisa tu conexión.');
-        }
+    handleGuardarCambios = () => {
+        // Lógica para guardar los cambios en la cita (puedes enviarlos a un servidor, actualizar en la base de datos, etc.)
+        console.log('Cambios guardados:', this.state);
     }
 
     handleCancelar = () => {
+        // Puedes navegar de regreso a la pantalla de visualización de la cita o realizar otras acciones según tus necesidades
         this.props.navigation.goBack();
     }
 
@@ -109,54 +87,54 @@ export default class CrearCita extends Component {
                     <Text style={styles.label}>Marca de Vehiculo:</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={this.handleMarcaCarroChange}
-                        value={this.state.marcaCarro}
+                        onChangeText={this.handleMarcaVehiculoChange}
+                        value={this.state.marcaVehiculo}
                     />
 
                     <Text style={styles.label}>Placas de Vehiculo:</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={this.handlePlacasCarroChange}
-                        value={this.state.placasCarro}
+                        onChangeText={this.handlePlacasVehiculoChange}
+                        value={this.state.placasVehiculo}
                     />
 
                     <Text style={styles.label}>Color de Vehiculo:</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={this.handleColorCarroChange}
-                        value={this.state.colorCarro}
+                        onChangeText={this.handleColorVehiculoChange}
+                        value={this.state.colorVehiculo}
                     />
 
                     <Text style={styles.label}>Hora de Visita:</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={this.handleHoraEntradaChange}
-                        value={this.state.horaEntrada}
+                        onChangeText={this.handleHoraVisitaChange}
+                        value={this.state.horaVisita}
                     />
 
                     <Text style={styles.label}>Día de Visita:</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={this.handleDiaEntradaChange}
-                        value={this.state.diaEntrada}
+                        onChangeText={this.handleDiaVisitaChange}
+                        value={this.state.diaVisita}
                     />
 
                     <Text style={styles.label}>Puerta:</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={this.handlePuertaEntradaChange}
-                        value={this.state.puertaEntrada}
+                        onChangeText={this.handlePuertaChange}
+                        value={this.state.puerta}
                     />
 
                     <Text style={styles.label}>Módulo Dirigido:</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={this.handleModuloVisitaChange}
-                        value={this.state.moduloVisita}
+                        onChangeText={this.handleModuloDirigidoChange}
+                        value={this.state.moduloDirigido}
                     />
 
-                    <TouchableOpacity onPress={this.handleSubmit} style={styles.buttonCrearCita}>
-                        <Text style={styles.buttonText}>Crear Cita</Text>
+                    <TouchableOpacity onPress={this.handleGuardarCambios} style={styles.buttonGuardar}>
+                        <Text style={styles.buttonText}>Guardar Cambios</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={this.handleCancelar} style={styles.buttonCancelar}>
@@ -197,7 +175,7 @@ const styles = StyleSheet.create({
         fontSize: 17,
         color: 'white', // Color del texto
     },
-    buttonCrearCita: {
+    buttonGuardar: {
         backgroundColor: 'green',
         paddingVertical: 15,
         paddingHorizontal: 20,

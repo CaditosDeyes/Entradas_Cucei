@@ -13,9 +13,9 @@ export default class Inicio extends Component {
         this.props.navigation.navigate('CrearCita');
     }
 
-    ir_a_ver_cita = () => {
-        console.log("Presionaste el botón 'Ver Cita'");
-        this.props.navigation.navigate('VerCita');
+    ir_a_editar_cita = () => {
+        console.log("Presionaste el botón 'EditarCita'");
+        this.props.navigation.navigate('EditarCita');
     }
 
     render() {
@@ -57,13 +57,13 @@ export default class Inicio extends Component {
                     borderRadius: 40,
                     marginLeft: 80,
                     marginTop: 20,
-                }} onPress={this.ir_a_ver_cita}>
+                }} onPress={this.ir_a_editar_cita}>
                     <Text style={{
                         fontSize: 20,
                         textAlign: "center",
                         marginTop: 10,
                         color: "black",
-                    }}>Ver Cita</Text>
+                    }}>Editar Cita</Text>
                 </TouchableOpacity>
             </View>
         );
