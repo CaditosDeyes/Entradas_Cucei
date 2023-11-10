@@ -1,64 +1,108 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 
 export default class EditarCita extends Component {
     constructor(props) {
         super(props);
-        // Inicializa el estado con los datos existentes de la cita que estás editando
         this.state = {
             nombre: '',
             apellido: '',
-            marcaVehiculo: '',
-            placasVehiculo: '',
-            colorVehiculo: '',
-            horaVisita: '',
-            diaVisita: '',
-            puerta: '',
-            moduloDirigido: '',
+            marcaCarro: '',
+            placasCarro: '',
+            colorCarro: '',
+            horaEntrada: '', // Asegúrate de que coincida con el nombre del campo en tu formulario
+            diaEntrada: '',
+            puertaEntrada: '',
+            moduloVisita: '',
         };
     }
 
-    // Métodos para manejar cambios en los campos de edición
+    componentDidMount() {
+        // Obtén los parámetros de la ruta (nombre y apellido) para cargar la información de la cita
+        const { route } = this.props;
+        const { nombre, apellido } = route.params;
 
-    handleNombreChange = (text) => {
-        this.setState({ nombre: text });
+        // Asigna los valores iniciales a los campos de la cita
+        this.setState({
+            nombre: nombre,
+            apellido: apellido,
+        });
+
+        // Llama a la función para buscar la cita y cargar la información
+        this.handleBuscarCita();
     }
 
-    handleApellidoChange = (text) => {
-        this.setState({ apellido: text });
+    handleBuscarCita = () => {
+        const { nombre, apellido } = this.state;
+
+        // Lógica para buscar la cita con el nombre y apellido en tu base de datos
+        fetch(`https://spousal-probabiliti.000webhostapp.com/editar.php?nombre=${nombre}&apellido=${apellido}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.nombre && data.apellido) {
+                    // Actualiza el estado con la cita encontrada
+                    this.setState({
+                        marcaCarro: data.marcaCarro,
+                        placasCarro: data.placasCarro,
+                        colorCarro: data.colorCarro,
+                        horaEntrada: data.horaEntrada, // Asegúrate de que coincida con el nombre del campo en tu formulario
+                        diaEntrada: data.diaEntrada,
+                        puertaEntrada: data.puertaEntrada,
+                        moduloVisita: data.moduloVisita,
+                    });
+                } else {
+                    // Maneja el caso en el que la cita no fue encontrada
+                    console.log('Cita no encontrada');
+                    // Puedes mostrar un mensaje al usuario, por ejemplo
+                    Alert.alert('Cita no encontrada', 'La cita con el nombre y apellido proporcionados no fue encontrada.');
+                }
+            })
+            .catch(error => {
+                // Maneja los errores de la solicitud
+                console.error('Error en la solicitud:', error);
+                // Puedes mostrar un mensaje de error al usuario, por ejemplo
+                Alert.alert('Error', 'Error al buscar la cita. Por favor, inténtalo de nuevo.');
+            });
     }
 
-    handleMarcaVehiculoChange = (text) => {
-        this.setState({ marcaVehiculo: text });
-    }
-
-    handlePlacasVehiculoChange = (text) => {
-        this.setState({ placasVehiculo: text });
-    }
-
-    handleColorVehiculoChange = (text) => {
-        this.setState({ colorVehiculo: text });
-    }
-
-    handleHoraVisitaChange = (text) => {
-        this.setState({ horaVisita: text });
-    }
-
-    handleDiaVisitaChange = (text) => {
-        this.setState({ diaVisita: text });
-    }
-
-    handlePuertaChange = (text) => {
-        this.setState({ puerta: text });
-    }
-
-    handleModuloDirigidoChange = (text) => {
-        this.setState({ moduloDirigido: text });
-    }
 
     handleGuardarCambios = () => {
         // Lógica para guardar los cambios en la cita (puedes enviarlos a un servidor, actualizar en la base de datos, etc.)
-        console.log('Cambios guardados:', this.state);
+        const { nombre, apellido, marcaCarro, placasCarro, colorCarro, horaEntrada, diaEntrada, puertaEntrada, moduloVisita } = this.state;
+    
+        // Realiza la actualización en el servidor
+        fetch(`https://spousal-probabiliti.000webhostapp.com/editar.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                nombre: nombre,
+                apellido: apellido,
+                marcaCarro: marcaCarro,
+                placasCarro: placasCarro,
+                colorCarro: colorCarro,
+                horaEntrada: horaEntrada,
+                diaEntrada: diaEntrada,
+                puertaEntrada: puertaEntrada,
+                moduloVisita: moduloVisita,
+            }),
+        })
+        .then(response => response.json()) // Cambia a response.json()
+        .then(data => {
+            // Muestra el resultado de la actualización en un mensaje de alerta
+            Alert.alert('Resultado de la Actualización', data.mensaje); // Asegúrate de que la clave sea correcta
+    
+            // Puedes redirigir a otra pantalla o realizar otras acciones después de la actualización
+            // Por ejemplo, regresar a la pantalla principal
+            this.props.navigation.navigate('Inicio');
+        })
+        .catch(error => {
+            // Maneja los errores de la solicitud
+            console.error('Error en la solicitud:', error);
+            // Muestra un mensaje de error al usuario
+            Alert.alert('Error', 'Error al actualizar la cita. Por favor, inténtalo de nuevo.');
+        });
     }
 
     handleCancelar = () => {
@@ -73,64 +117,66 @@ export default class EditarCita extends Component {
                     <Text style={styles.label}>Nombre:</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={this.handleNombreChange}
+                        onChangeText={(text) => this.setState({ nombre: text })}
                         value={this.state.nombre}
+                        editable={false} // El nombre no es editable
                     />
 
                     <Text style={styles.label}>Apellido:</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={this.handleApellidoChange}
+                        onChangeText={(text) => this.setState({ apellido: text })}
                         value={this.state.apellido}
+                        editable={false} // El apellido no es editable
                     />
 
                     <Text style={styles.label}>Marca de Vehiculo:</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={this.handleMarcaVehiculoChange}
-                        value={this.state.marcaVehiculo}
+                        onChangeText={(text) => this.setState({ marcaCarro: text })}
+                        value={this.state.marcaCarro}
                     />
 
                     <Text style={styles.label}>Placas de Vehiculo:</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={this.handlePlacasVehiculoChange}
-                        value={this.state.placasVehiculo}
+                        onChangeText={(text) => this.setState({ placasCarro: text })}
+                        value={this.state.placasCarro}
                     />
 
                     <Text style={styles.label}>Color de Vehiculo:</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={this.handleColorVehiculoChange}
-                        value={this.state.colorVehiculo}
+                        onChangeText={(text) => this.setState({ colorCarro: text })}
+                        value={this.state.colorCarro}
                     />
 
                     <Text style={styles.label}>Hora de Visita:</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={this.handleHoraVisitaChange}
-                        value={this.state.horaVisita}
+                        onChangeText={(text) => this.setState({ horaEntrada: text })}
+                        value={this.state.horaEntrada}
                     />
 
                     <Text style={styles.label}>Día de Visita:</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={this.handleDiaVisitaChange}
-                        value={this.state.diaVisita}
+                        onChangeText={(text) => this.setState({ diaEntrada: text })}
+                        value={this.state.diaEntrada}
                     />
 
                     <Text style={styles.label}>Puerta:</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={this.handlePuertaChange}
-                        value={this.state.puerta}
+                        onChangeText={(text) => this.setState({ puertaEntrada: text })}
+                        value={this.state.puertaEntrada}
                     />
 
                     <Text style={styles.label}>Módulo Dirigido:</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={this.handleModuloDirigidoChange}
-                        value={this.state.moduloDirigido}
+                        onChangeText={(text) => this.setState({ moduloVisita: text })}
+                        value={this.state.moduloVisita}
                     />
 
                     <TouchableOpacity onPress={this.handleGuardarCambios} style={styles.buttonGuardar}>
