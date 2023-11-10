@@ -66,17 +66,13 @@ export default class Inicio extends Component {
                 return response.json();
             })
             .then(data => {
-                if (data && data.errorCode === 1) {
+                if (data && !data.error) {
                     // Datos de la cita encontrada
                     this.setState({ citaData: data });
                     this.handleAceptarEditarModal(); // Llama a la función para mostrar los detalles o editar la cita
-                } else if (data && data.errorCode === 3) {
-                    // Cita no encontrada
-                    console.log('Cita no encontrada');
-                    Alert.alert('Cita no encontrada', 'La cita con el nombre y apellido proporcionados no fue encontrada.');
                 } else {
-                    // Manejar otros casos de respuesta del servidor si es necesario
-                    console.log('Respuesta inesperada del servidor');
+                    // Manejar el caso de respuesta de error del servidor si es necesario
+                    console.log('Error en la respuesta del servidor:', data.error);
                     Alert.alert('Error', 'Error al buscar la cita. Por favor, inténtalo de nuevo.');
                 }
             })
@@ -88,7 +84,14 @@ export default class Inicio extends Component {
 
     handleAceptarEditarModal = () => {
         this.setState({ showEditarModal: false });
-        this.buscarCitaYEditar();
+
+        // Navegar a la pantalla EditarCita con los datos necesarios
+        const { nombre, apellido, citaData } = this.state;
+        this.props.navigation.navigate('EditarCita', {
+            nombre: nombre,
+            apellido: apellido,
+            citaData: citaData,
+        });
     }
 
     handleCancelarEditarModal = () => {
