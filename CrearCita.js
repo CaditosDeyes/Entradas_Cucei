@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 
 export default class CrearCita extends Component {
     constructor(props) {
@@ -10,11 +11,28 @@ export default class CrearCita extends Component {
             marcaCarro: '',
             placasCarro: '',
             colorCarro: '',
-            horaEntrada: '',
+            horaEntrada: this.generarOpcionesDeHora(),  // Opciones de hora
+            horaSeleccionada: '07:00',  // Hora inicial seleccionada
             diaEntrada: '',
             puertaEntrada: '',
             moduloVisita: '',
         };
+    }
+
+    // Función para generar opciones de hora
+    generarOpcionesDeHora = () => {
+        const opcionesDeHora = [];
+        for (let hora = 7; hora <= 20; hora++) {
+            if (hora < 21) {
+                opcionesDeHora.push(`${hora.toString().padStart(2, '0')}:00`);
+            }
+            opcionesDeHora.push(`${hora.toString().padStart(2, '0')}:10`);
+            opcionesDeHora.push(`${hora.toString().padStart(2, '0')}:20`);
+            opcionesDeHora.push(`${hora.toString().padStart(2, '0')}:30`);
+            opcionesDeHora.push(`${hora.toString().padStart(2, '0')}:40`);
+            opcionesDeHora.push(`${hora.toString().padStart(2, '0')}:50`);
+        }
+        return opcionesDeHora;
     }
 
     handleNombreChange = (text) => {
@@ -37,8 +55,8 @@ export default class CrearCita extends Component {
         this.setState({ colorCarro: text });
     }
 
-    handleHoraEntradaChange = (text) => {
-        this.setState({ horaEntrada: text });
+    handleHoraEntradaChange = (hora) => {
+        this.setState({ horaSeleccionada: hora });
     }
 
     handleDiaEntradaChange = (text) => {
@@ -60,12 +78,11 @@ export default class CrearCita extends Component {
             marcaCarro: this.state.marcaCarro,
             placasCarro: this.state.placasCarro,
             colorCarro: this.state.colorCarro,
-            horaEntrada: this.state.horaEntrada,
+            horaEntrada: this.state.horaSeleccionada,
             diaEntrada: this.state.diaEntrada,
             puertaEntrada: this.state.puertaEntrada,
             moduloVisita: this.state.moduloVisita,
         }).toString();
-        
 
         try {
             const response = await fetch(`https://spousal-probabiliti.000webhostapp.com/datos.php?${queryParams}`);
@@ -76,7 +93,7 @@ export default class CrearCita extends Component {
             if (data === "1") {
                 Alert.alert("Cita creada correctamente");
             } else {
-                Alert.alert("Error al crear la cita, intentelo de nuevo");
+                Alert.alert("Error al crear la cita, inténtelo de nuevo");
             }
         } catch (error) {
             console.error('Error de red:', error);
@@ -128,11 +145,16 @@ export default class CrearCita extends Component {
                     />
 
                     <Text style={styles.label}>Hora de Visita:</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={this.handleHoraEntradaChange}
-                        value={this.state.horaEntrada}
-                    />
+                    <Picker
+                        style={styles.picker}
+                        selectedValue={this.state.horaSeleccionada}
+                        onValueChange={(itemValue) => this.handleHoraEntradaChange(itemValue)}
+                        mode="dropdown" // Agregado el modo para Android
+                    >
+                        {this.state.horaEntrada.map((hora, index) => (
+                            <Picker.Item key={index} label={hora} value={hora} />
+                        ))}
+                    </Picker>
 
                     <Text style={styles.label}>Día de Visita:</Text>
                     <TextInput
@@ -196,6 +218,16 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 17,
         color: 'white', // Color del texto
+    },
+    picker: {
+        width: 300,
+        height: 40,
+        color: 'white',
+        backgroundColor: '#1E3264', // Fondo del Picker
+        marginBottom: 10,
+        borderColor: 'white',
+        borderWidth: 2,
+        borderRadius: 5, // Añadido para bordes redondeados
     },
     buttonCrearCita: {
         backgroundColor: 'green',
