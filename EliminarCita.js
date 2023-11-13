@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 export default class EliminarCita extends Component {
     constructor(props) {
@@ -7,61 +7,81 @@ export default class EliminarCita extends Component {
         this.state = {
             nombre: '',
             apellido: '',
-            citaEncontrada: null,
         };
     }
 
-    handleEliminarCita = () => {
-        // Aquí deberías implementar la lógica para eliminar la cita
-        // Puedes hacer una solicitud al servidor o realizar cualquier acción necesaria
-        // Después de eliminar la cita, puedes navegar a la pantalla anterior o a otra pantalla
-        Alert.alert('Cita eliminada correctamente');
-        this.props.navigation.goBack(); // Navegar hacia atrás
-        // O puedes navegar a otra pantalla después de eliminar la cita
-        // this.props.navigation.navigate('OtraPantalla');
+    handleNombreChange = (text) => {
+        this.setState({ nombre: text });
     }
 
-    renderCitaEncontrada = () => {
-        const { citaEncontrada } = this.state;
+    handleApellidoChange = (text) => {
+        this.setState({ apellido: text });
+    }
 
-        if (citaEncontrada) {
-            return (
-                <View style={styles.container}>
-                    <Text style={styles.label}>Nombre de la Cita:</Text>
-                    <Text style={styles.info}>{citaEncontrada.nombre}</Text>
+    buscarYEliminarCita = async () => {
+        const { nombre, apellido } = this.state;
 
-                    <Text style={styles.label}>Apellido de la Cita:</Text>
-                    <Text style={styles.info}>{citaEncontrada.apellido}</Text>
-
-                    <Text style={styles.label}>Marca del Vehículo:</Text>
-                    <Text style={styles.info}>{citaEncontrada.marcaCarro}</Text>
-
-                    <Text style={styles.label}>Placas del Vehículo:</Text>
-                    <Text style={styles.info}>{citaEncontrada.placasCarro}</Text>
-
-                    <Text style={styles.label}>Color del Vehículo:</Text>
-                    <Text style={styles.info}>{citaEncontrada.colorCarro}</Text>
-
-                    <Text style={styles.label}>Hora de Entrada:</Text>
-                    <Text style={styles.info}>{citaEncontrada.horaEntrada}</Text>
-
-                    <Text style={styles.label}>Día de Entrada:</Text>
-                    <Text style={styles.info}>{citaEncontrada.diaEntrada}</Text>
-
-                    <Text style={styles.label}>Puerta de Entrada:</Text>
-                    <Text style={styles.info}>{citaEncontrada.puertaEntrada}</Text>
-
-                    <Text style={styles.label}>Módulo de Visita:</Text>
-                    <Text style={styles.info}>{citaEncontrada.moduloVisita}</Text>
-
-                    <TouchableOpacity onPress={this.handleEliminarCita} style={styles.buttonEliminar}>
-                        <Text style={styles.buttonText}>Eliminar Cita</Text>
-                    </TouchableOpacity>
-                </View>
-            );
+        if (!nombre || !apellido) {
+            Alert.alert('Por favor, ingresa el nombre y apellido.');
+            return;
         }
 
-        return null;
+        try {
+            const queryParams = new URLSearchParams({
+                nombre: this.state.nombre,
+                apellido: this.state.apellido,
+            }).toString();
+
+            const response = await fetch(`https://spousal-probabiliti.000webhostapp.com/buscar_cita.php?${queryParams}`);
+            const data = await response.text();
+
+            if (data === '1') {
+                // Se encontró la cita, preguntar si se desea eliminar
+                Alert.alert(
+                    'Confirmar',
+                    '¿Deseas eliminar esta cita?',
+                    [
+                        {
+                            text: 'Cancelar',
+                            style: 'cancel',
+                        },
+                        {
+                            text: 'Eliminar',
+                            onPress: () => this.eliminarCita(),
+                        },
+                    ],
+                    { cancelable: false }
+                );
+            } else {
+                Alert.alert('Cita no encontrada.');
+            }
+        } catch (error) {
+            console.error('Error de red:', error);
+            Alert.alert('Error de red, por favor revisa tu conexión.');
+        }
+    }
+
+    eliminarCita = async () => {
+        const { nombre, apellido } = this.state;
+
+        try {
+            const queryParams = new URLSearchParams({
+                nombre: this.state.nombre,
+                apellido: this.state.apellido,
+            }).toString();
+
+            const response = await fetch(`https://spousal-probabiliti.000webhostapp.com/eliminar_cita.php?${queryParams}`);
+            const data = await response.text();
+
+            if (data === '1') {
+                Alert.alert('Cita eliminada correctamente.');
+            } else {
+                Alert.alert('Error al eliminar la cita.');
+            }
+        } catch (error) {
+            console.error('Error de red:', error);
+            Alert.alert('Error de red, por favor revisa tu conexión.');
+        }
     }
 
     render() {
@@ -70,18 +90,20 @@ export default class EliminarCita extends Component {
                 <Text style={styles.label}>Nombre:</Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={(text) => this.setState({ nombre: text })}
+                    onChangeText={this.handleNombreChange}
                     value={this.state.nombre}
                 />
 
                 <Text style={styles.label}>Apellido:</Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={(text) => this.setState({ apellido: text })}
+                    onChangeText={this.handleApellidoChange}
                     value={this.state.apellido}
                 />
 
-                {this.renderCitaEncontrada()}
+                <TouchableOpacity onPress={this.buscarYEliminarCita} style={styles.buttonEliminar}>
+                    <Text style={styles.buttonText}>Buscar y Eliminar Cita</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -93,34 +115,30 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
+        backgroundColor: '#1E3264',
     },
     label: {
         fontSize: 20,
-        marginBottom: 5,
-        color: 'black',
-    },
-    info: {
-        fontSize: 18,
-        marginBottom: 15,
-        color: 'blue',
+        marginBottom: 10,
+        color: 'white',
     },
     input: {
         width: 300,
         height: 40,
-        borderColor: 'black',
+        borderColor: 'white',
         borderWidth: 1,
         marginBottom: 10,
         paddingHorizontal: 10,
         textAlign: 'center',
         fontSize: 17,
-        color: 'black',
+        color: 'white',
     },
     buttonEliminar: {
         backgroundColor: 'red',
         paddingVertical: 15,
         paddingHorizontal: 20,
+        marginTop: 10,
         borderRadius: 5,
-        marginTop: 20,
     },
     buttonText: {
         color: 'white',
