@@ -32,10 +32,10 @@ export default class EliminarCita extends Component {
                 apellido: this.state.apellido,
             }).toString();
 
-            const response = await fetch(`https://spousal-probabiliti.000webhostapp.com/buscar_cita.php?${queryParams}`);
-            const data = await response.text();
+            const response = await fetch(`https://spousal-probabiliti.000webhostapp.com/buscar.php?${queryParams}`);
+            const data = await response.json(); // Cambiado a response.json()
 
-            if (data === '1') {
+            if (data && data.nombre && data.apellido) {
                 // Se encontró la cita, preguntar si se desea eliminar
                 Alert.alert(
                     'Confirmar',
@@ -70,7 +70,7 @@ export default class EliminarCita extends Component {
                 apellido: this.state.apellido,
             }).toString();
 
-            const response = await fetch(`https://spousal-probabiliti.000webhostapp.com/eliminar_cita.php?${queryParams}`);
+            const response = await fetch(`https://spousal-probabiliti.000webhostapp.com/eliminar.php?${queryParams}`);
             const data = await response.text();
 
             if (data === '1') {
