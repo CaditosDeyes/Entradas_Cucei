@@ -18,6 +18,10 @@ export default class EliminarCita extends Component {
         this.setState({ apellido: text });
     }
 
+    handleCancelar = () => {
+        this.props.navigation.goBack();
+    }
+
     buscarYEliminarCita = async () => {
         const { nombre, apellido } = this.state;
 
@@ -33,13 +37,13 @@ export default class EliminarCita extends Component {
             }).toString();
 
             const response = await fetch(`https://spousal-probabiliti.000webhostapp.com/buscar.php?${queryParams}`);
-            const data = await response.json(); // Cambiado a response.json()
+            const data = await response.json();
 
             if (data && data.nombre && data.apellido) {
-                // Se encontró la cita, preguntar si se desea eliminar
+                // Se encontró la cita, mostrar la información
                 Alert.alert(
-                    'Confirmar',
-                    '¿Deseas eliminar esta cita?',
+                    'Cita encontrada',
+                    `Nombre: ${data.nombre}\nApellido: ${data.apellido}\nMarca de Vehiculo: ${data.marcaCarro}\nPlacas de Vehiculo: ${data.placasCarro}\nColor de Vehiculo: ${data.colorCarro}\nHora de Visita: ${data.horaEntrada}\nDía de Visita: ${data.diaEntrada}\nPuerta: ${data.puertaEntrada}\nMódulo Dirigido: ${data.moduloVisita}`,
                     [
                         {
                             text: 'Cancelar',
@@ -47,7 +51,7 @@ export default class EliminarCita extends Component {
                         },
                         {
                             text: 'Eliminar',
-                            onPress: () => this.eliminarCita(),
+                            onPress: () => this.confirmarEliminarCita(),
                         },
                     ],
                     { cancelable: false }
@@ -59,6 +63,24 @@ export default class EliminarCita extends Component {
             console.error('Error de red:', error);
             Alert.alert('Error de red, por favor revisa tu conexión.');
         }
+    }
+
+    confirmarEliminarCita = () => {
+        Alert.alert(
+            'Confirmar Eliminación',
+            '¿Estás seguro de que deseas eliminar esta cita?',
+            [
+                {
+                    text: 'Cancelar',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Eliminar',
+                    onPress: () => this.eliminarCita(),
+                },
+            ],
+            { cancelable: false }
+        );
     }
 
     eliminarCita = async () => {
@@ -104,6 +126,10 @@ export default class EliminarCita extends Component {
                 <TouchableOpacity onPress={this.buscarYEliminarCita} style={styles.buttonEliminar}>
                     <Text style={styles.buttonText}>Buscar y Eliminar Cita</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity onPress={this.handleCancelar} style={styles.buttonCancelar}>
+                    <Text style={styles.buttonText}>Cancelar</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -134,7 +160,7 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     buttonEliminar: {
-        backgroundColor: 'red',
+        backgroundColor: 'blue', // Cambiado a azul
         paddingVertical: 15,
         paddingHorizontal: 20,
         marginTop: 10,
@@ -144,5 +170,12 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 18,
         textAlign: 'center',
+    },
+    buttonCancelar: {
+        backgroundColor: 'red',
+        paddingVertical: 15,
+        paddingHorizontal: 20,
+        marginTop: 10,
+        borderRadius: 5,
     },
 });

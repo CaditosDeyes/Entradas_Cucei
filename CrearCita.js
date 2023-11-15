@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
         borderRadius: 5, // Añadido para bordes redondeados
     },
     buttonCrearCita: {
-        backgroundColor: 'green',
+        backgroundColor: 'green', // Cambiado a azul
         paddingVertical: 15,
         paddingHorizontal: 20,
         marginTop: 10,

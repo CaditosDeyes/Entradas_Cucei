@@ -18,6 +18,10 @@ export default class EliminarCita extends Component {
         this.setState({ apellido: text });
     }
 
+    handleCancelar = () => {
+        this.props.navigation.goBack();
+    } 
+
     buscarCita = async () => {
         const { nombre, apellido } = this.state;
 
@@ -70,6 +74,10 @@ export default class EliminarCita extends Component {
                 <TouchableOpacity onPress={this.buscarCita} style={styles.buttonBuscar}>
                     <Text style={styles.buttonText}>Buscar Cita</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity onPress={this.handleCancelar} style={styles.buttonCancelar}>
+                        <Text style={styles.buttonText}>Cancelar</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -110,5 +118,12 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 18,
         textAlign: 'center',
+    },
+    buttonCancelar: {
+        backgroundColor: 'red',
+        paddingVertical: 15,
+        paddingHorizontal: 20,
+        marginTop: 10,
+        borderRadius: 5,
     },
 });
