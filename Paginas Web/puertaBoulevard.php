@@ -5,240 +5,359 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Puerta Boulevard</title>
     <style>
+        /* Estilos generales del cuerpo del documento */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 20px;
-            background-color: #f2f2f2;
+            background-color: #B9C6CA;
             color: #333;
         }
-        h2 {
-            margin-bottom: 10px;
+
+        /* Estilos para la primera sección */
+        section.header {
+            background-color: #4485FF;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
-        .container {
+
+        .time {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .titlePuerta {
+            font-size: 2em;
+            font-weight: 600;
+            color: #000000;
+        }
+
+        #fechaHora {
+            font-size: 2em;
+            font-weight: bold;
+            color: #000000;
+        }
+
+        /* Estilos para la sección de "Visita Actual" */
+        section.current {
+            background-color: #0D51E1;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        h2.current {
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: 600;
+            color: white;
+        }
+
+        .container.current {
             border: 1px solid #ddd;
             margin: 10px;
             padding: 10px;
             background-color: #fff;
             border-radius: 10px;
+            color: #333;
         }
-        .horizontal-block {
-            border: 1px solid red;
-            background-color: white;
-            margin: 15px;
-            padding: 10px;
-            align-items: center;
+
+        /* Estilos para la sección de "Visitas Próximas" */
+        section.upcoming {
+            background-color: #92FFA9;
+            padding: 20px;
             border-radius: 10px;
+            margin-bottom: 20px;
+            overflow-x: hidden; /* Evita el desplazamiento horizontal */
         }
-        .double-container {
-            display: flex;
-            justify-content: space-between;
-            border: 1px solid red;
-            background-color: white;
-            border-radius: 10px;
-            margin: 15px 15px 50px 15px;
-            padding: 10px;
-        }
-        .left-block, .right-block {
-            width: 48%;
-            border: 1px solid red;
-            background-color: white;
-        }
-        .horizontal-block h2, .left-block h2, .right-block h2 {
+
+        h2.upcoming {
+            margin-bottom: 10px;
             text-align: center;
-            font-size: 2em;
+            font-size: 1.5em;
             font-weight: 600;
+            color: white;
         }
-        /* Container */
-        .horizontal-block .current {
-            font-weight: bolder;
-        }
-        .current, .preview, .post {
-            margin: 10px;
+
+        .container.upcoming {
+            border: 1px solid #ddd;
+            margin: 10px auto; /* Centra el contenido horizontalmente */
             padding: 10px;
+            background-color: #fff;
             border-radius: 10px;
+            color: #333;
         }
-        .current {
-            background-color: rgba(76, 161, 76, 0.611)
+
+        /* Estilos para la sección de "Visitas Pasadas" */
+        section.past {
+            background-color: #FF7474;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow-x: hidden; /* Evita el desplazamiento horizontal */
         }
-        .preview {
-            background-color: rgba(255, 166, 0, 0.558);
-            color: black;
+
+        h2.past {
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 1.5em;
             font-weight: 600;
+            color: #333;
         }
-        .post {
-            background-color: rgba(255, 0, 0, 0.674);
-            color: black;
-            font-weight: 600;
+
+        .container.past {
+            border: 1px solid #ddd;
+            margin: 10px auto; /* Centra el contenido horizontalmente */
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 10px;
+            color: #333;
         }
-        /* TIME */
-        .time {
-            display: flex;
-            justify-content: space-between;
+
+        /* Estilos específicos para las tablas */
+        table {
+            border-collapse: collapse;
+            border: 2px solid rgb(200, 200, 200);
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+            width: 100%;
+            margin-top: 10px;
+            color: #000000;
         }
-        .titlePuerta{
-            font-size: 4em;
-            color: black;
-            font-weight: 600;
+
+        th,
+        td {
+            border: 1px solid rgb(190, 190, 190);
+            padding: 10px;
+            text-align: center;
         }
-        #fechaHora {
-            font-size: 4em;
+
+        th {
+            background-color: rgb(235, 235, 235);
+            font-size: 1em;
             font-weight: bold;
-            color: #000ff5;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgb(250, 250, 250);
+        }
+
+        tr:nth-child(odd) {
+            background-color: rgb(245, 245, 245);
+        }
+
+        /* Estilo adicional para el pie de tabla (caption) */
+        caption {
+            padding: 10px;
+            color: #FFF;
+            font-weight: bold;
+        }
+
+        /* Estilos para resaltar las celdas de la tabla actual */
+        .current td {
+            background-color: #74FFF9;
+            color: black;
+        }
+
+        /* Estilos para resaltar las celdas de las tablas de visitas próximas y pasadas */
+        .container.upcoming th {
+            background-color: #FFF;
+            color: #333;
+        }
+
+        .container.upcoming td {
+            background-color: #74FFF9;
+            color: black;
+        }
+
+        .container.past th {
+            background-color: #FFF;
+            color: #333;
+        }
+
+        .container.past td {
+            background-color: #74FFF9;
+            color: black;
+        }
+
+        .upcoming,
+        .past {
+            width: 100%;
+            text-align: center;
+        }
+
+        .container.upcoming,
+        .container.past {
+            width: 100%;
+            margin: 0 auto;
         }
     </style>
 </head>
 <body>
-    <div class="time">
-        <div class="titlePuerta">Puerta Boulevard</div>
-        <div id="fechaHora"></div>
-        
-    </div> 
-    
-    <?php
-            date_default_timezone_set('America/Mexico_City');
-            // Datos de conexión
-            $server = "localhost";
-            $user = "id21510609_admin";
-            $password = "#Admin1234";
-            $bd = "id21510609_datos";
-
-            // Crear conexión
-            $cone = new mysqli($server, $user, $password, $bd);
-
-            // Verificar la conexión
-            if ($cone->connect_error) {
-                die("Error en la conexión a la base de datos: " . $cone->connect_error);
-            } else {
-                echo "Conexión exitosa a la base de datos.<br>";
-            }
-            
-            // Obtiene la hora actual en formato "H:i"
-            $horaActual = date("H:i");
-            
-            // 15 minutos antes de la hora actual
-            $horaAntes = date("H:i", strtotime("-15 minutes", strtotime($horaActual)));
-            // 5 minutos antes
-            $horaAntes5 = date("H:i", strtotime("-5 minutes", strtotime($horaActual)));
-            // 15 minutos despues de la hora actual
-            $horaDespues = date("H:i", strtotime("+15 minutes", strtotime($horaActual)));
-            // 5 minutos despues
-            $horaDespues5 = date("H:i", strtotime("+5 minutes", strtotime($horaActual)));
-            
-            echo "Hola eliminar < " . $horaAntes . "<br>";
-            // DELETE
-            $sqlEliminar = "DELETE FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) < '$horaAntes'";
-            $cone->query($sqlEliminar);
-            
-            // Consulta BD para obtener las visitas programadas dentro del rango de tiempo
-            $sqlActual = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes5' AND '$horaDespues5' AND puertaEntrada = 'Boulevard' ORDER BY TIME(horaEntrada)";
-
-            //$sqlActual = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND puertaEntrada = 'Boulevard'";
-
-            $resultActual = $cone->query($sqlActual);
-            if (!$resultActual) {
-                die("Error en la consulta SQL: " . $cone->error);
-            }
-            
-            $sqlPreview = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) BETWEEN '$horaDespues5' AND '$horaDespues' AND puertaEntrada = 'Boulevard' ORDER BY TIME(horaEntrada)";
-            $resultPreview = $cone->query($sqlPreview);
-            
-            $sqlPost = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes' AND '$horaAntes5' AND puertaEntrada = 'Boulevard' ORDER BY TIME(horaEntrada)";
-            $resultPost = $cone->query($sqlPost);
-            
-            // Eliminar las visitas que han pasado más de 15 minutos desde su hora de entrada
-            $sqlEliminar = "DELETE FROM DatosP WHERE DATE(diaEntrada) = CURDATE() AND TIME(horaEntrada) < '$horaAntes'";
-            $cone->query($sqlEliminar);
-
-            // Cierra la conexión
-            //$conn->close();
-            ?>
-
-    <div class="horizontal-block">
-        <h2>Visita Actual</h2>
-        <div class="current">
-        <?php
-            echo "De: " . $horaAntes5 . " a " . $horaDespues5 . "<br>";
-            if ($resultActual->num_rows > 0) {
-                while($row = $resultActual->fetch_assoc()) {
-                    echo '<div class="container">
-                        Hora Entrada: ' . $row["horaEntrada"] . ' | Dia Entrada: ' . $row["diaEntrada"] . '<br><br>
-                        ID: ' . $row["id"] . '<br>
-                        Nombre: ' . $row["nombre"] . '<br>
-                        Apellido: ' . $row["apellido"] . '<br>
-                        Modulo: ' . $row["moduloVisita"] . '<br>
-                        Puerta Entrada: ' . $row["puertaEntrada"] . '<br>
-                        Marca: ' . $row["marcaCarro"] . '<br>
-                        Placa: ' . $row["placasCarro"] . '<br>
-                          </div>';
-                }
-            } else {
-                echo "No hay visitas (Boulevard).";
-            }
-            //$conn->close();
-        ?>
+    <!-- Primera sección -->
+    <section class="header">
+        <div class="time">
+            <div class="titlePuerta">Puerta Boulevard</div>
+            <div id="fechaHora"></div>
         </div>
-    </div>
+    </section>
+    <?php
+        date_default_timezone_set('America/Mexico_City');
+        // Datos de conexión
+        $server = "localhost";
+        $user = "id21510609_admin";
+        $password = "#Admin1234";
+        $bd = "id21510609_datos";
 
-    <div class="double-container">
-        <div class="left-block">
-            
-            <h2>Visitas Próximas</h2>
-            <div class="preview">
-                 <?php
-                 echo "De: " . $horaDespues5 . " a " . $horaDespues . "<br>";
+        // Crear conexión
+        $cone = new mysqli($server, $user, $password, $bd);
+        
+        // Obtiene la hora actual en formato "H:i"
+        $horaActual = date("H:i");
+        
+        // 15 minutos antes de la hora actual
+        $horaAntes = date("H:i", strtotime("-15 minutes", strtotime($horaActual)));
+        // 5 minutos antes
+        $horaAntes5 = date("H:i", strtotime("-4 minutes", strtotime($horaActual)));
+        // 15 minutos despues de la hora actual
+        $horaDespues = date("H:i", strtotime("+15 minutes", strtotime($horaActual)));
+        // 5 minutos despues
+        $horaDespues5 = date("H:i", strtotime("+4 minutes", strtotime($horaActual)));
+        
+        //echo "Hola eliminar < " . $horaAntes . "<br>";
+        // DELETE
+        $sqlEliminar = "DELETE FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) < '$horaAntes'";
+        $cone->query($sqlEliminar);
+        
+        // Consulta BD para obtener las visitas programadas dentro del rango de tiempo
+        $sqlActual = "SELECT * FROM DatosP WHERE diaEntrada = CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes5' AND '$horaDespues5' AND puertaEntrada = 'Boulevard' ORDER BY TIME(horaEntrada)";
+        //$sqlActual = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND puertaEntrada = 'Boulevard'";
+        $resultActual = $cone->query($sqlActual);
+        
+        $sqlPreview = "SELECT * FROM DatosP WHERE diaEntrada = CURDATE() AND TIME(horaEntrada) BETWEEN '$horaDespues5' AND '$horaDespues' AND puertaEntrada = 'Boulevard' ORDER BY TIME(horaEntrada)";
+        $resultPreview = $cone->query($sqlPreview);
+        
+        $sqlPost = "SELECT * FROM DatosP WHERE diaEntrada = CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes' AND '$horaAntes5' AND puertaEntrada = 'Boulevard' ORDER BY TIME(horaEntrada) desc";
+        $resultPost = $cone->query($sqlPost);
+        
+        // Eliminar las visitas que han pasado más de 15 minutos desde su hora de entrada
+        $sqlEliminar = "DELETE FROM DatosP WHERE DATE(diaEntrada) = CURDATE() AND TIME(horaEntrada) < '$horaAntes'";
+        $cone->query($sqlEliminar);
+
+        // Cierra la conexión
+        //$cone->close();
+        ?>
+
+    <!-- Segunda sección (Visita Actual) -->
+    <section class="current">
+        <h2 class="current">Visitas Actuales</h2>
+        <table class="current">
+            <caption>De: <?php echo $horaAntes5; ?> a <?php echo $horaDespues5; ?></caption>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Marca de Vehiculo</th>
+                <th>Placas de Vehiculo</th>
+                <th>Color de Vehiculo</th>
+                <th>Hora de Visita</th>
+                <th>Modulo Dirigido</th>
+                <th>Fecha</th>
+            </tr>
+            <?php
+                if ($resultActual->num_rows > 0) {
+                    while($row = $resultActual->fetch_assoc()) {
+                        echo '<tr>
+                                <td>' . $row["nombre"] . '</td>
+                                <td>' . $row["apellido"] . '</td>
+                                <td>' . $row["marcaCarro"] . '</td>
+                                <td>' . $row["placasCarro"] . '</td>
+                                <td>' . $row["colorCarro"] . '</td>
+                                <td>' . $row["horaEntrada"] . '</td>
+                                <td>' . $row["moduloVisita"] . '</td>
+                                <td>' . $row["diaEntrada"] . '</td>
+                              </tr>';
+                    }
+                } else {
+                    echo '<tr><td colspan="9">No hay visitas (Boulevard).</td></tr>';
+                }
+            ?>
+        </table>
+    </section>
+
+    <!-- Tercera sección (Visitas Próximas y Visitas Pasadas) -->
+    <section class="upcoming">
+        <h2 class="upcoming">Visitas Próximas</h2>
+        <table class="container upcoming">
+                <caption>De: <?php echo $horaDespues5; ?> a <?php echo $horaDespues; ?></caption>
+                <tr>
+                    <!-- Encabezados de la tabla -->
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Marca de Vehiculo</th>
+                    <th>Placas de Vehiculo</th>
+                    <th>Color de Vehiculo</th>
+                    <th>Hora de Visita</th>
+                    <th>Modulo Dirigido</th>
+                    <th>Fecha</th>
+                </tr>
+                <?php
                     if ($resultPreview->num_rows > 0) {
                         while($row = $resultPreview->fetch_assoc()) {
-                            echo '<div class="container">
-                        Hora Entrada: ' . $row["horaEntrada"] . ' | Dia Entrada: ' . $row["diaEntrada"] . '<br><br>
-                        ID: ' . $row["id"] . '<br>
-                        Nombre: ' . $row["nombre"] . '<br>
-                        Apellido: ' . $row["apellido"] . '<br>
-                        Modulo: ' . $row["moduloVisita"] . '<br>
-                        Puerta Entrada: ' . $row["puertaEntrada"] . '<br>
-                        Marca: ' . $row["marcaCarro"] . '<br>
-                        Placa: ' . $row["placasCarro"] . '<br>
-                          </div>';
+                            echo '<tr>
+                                <td>' . $row["nombre"] . '</td>
+                                <td>' . $row["apellido"] . '</td>
+                                <td>' . $row["marcaCarro"] . '</td>
+                                <td>' . $row["placasCarro"] . '</td>
+                                <td>' . $row["colorCarro"] . '</td>
+                                <td>' . $row["horaEntrada"] . '</td>
+                                <td>' . $row["moduloVisita"] . '</td>
+                                <td>' . $row["diaEntrada"] . '</td>
+                                </tr>';
                         }
                     } else {
-                        echo '<div class="container">
-                            No hay visitas Preview (Boulevard)
-                          </div>';
+                        echo '<tr><td colspan="9">No hay visitas Preview (Boulevard)</td></tr>';
                     }
                 ?>
-            </div>
-            <!-- Contenido del bloque de Visitas Próximas -->
-        </div>
-        
-        <div class="right-block">
-            <h2>Visitas Pasadas</h2>
-            <div class="post">
+            </table>
+    </section>
+
+    <section class="past">
+        <h2 class="past">Visitas Pasadas</h2>
+        <table class="container past">
+                <caption>De: <?php echo $horaAntes; ?> a <?php echo $horaAntes5; ?></caption>
+                <tr>
+                    <!-- Encabezados de la tabla -->
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Marca de Vehiculo</th>
+                    <th>Placas de Vehiculo</th>
+                    <th>Color de Vehiculo</th>
+                    <th>Hora de Visita</th>
+                    <th>Modulo Dirigido</th>
+                    <th>Fecha</th>
+                </tr>
                 <?php
-                echo "De: " . $horaAntes . " a " . $horaAntes5 . "<br>";
                     if ($resultPost->num_rows > 0) {
                         while($row = $resultPost->fetch_assoc()) {
-                           echo '<div class="container">
-                        Hora Entrada: ' . $row["horaEntrada"] . ' | Dia Entrada: ' . $row["diaEntrada"] . '<br><br>
-                        ID: ' . $row["id"] . '<br>
-                        Nombre: ' . $row["nombre"] . '<br>
-                        Apellido: ' . $row["apellido"] . '<br>
-                        Modulo: ' . $row["moduloVisita"] . '<br>
-                        Puerta Entrada: ' . $row["puertaEntrada"] . '<br>
-                        Marca: ' . $row["marcaCarro"] . '<br>
-                        Placa: ' . $row["placasCarro"] . '<br>
-                          </div>';
+                            echo '<tr>
+                                    <td>' . $row["nombre"] . '</td>
+                                    <td>' . $row["apellido"] . '</td>
+                                    <td>' . $row["marcaCarro"] . '</td>
+                                    <td>' . $row["placasCarro"] . '</td>
+                                    <td>' . $row["colorCarro"] . '</td>
+                                    <td>' . $row["horaEntrada"] . '</td>
+                                    <td>' . $row["moduloVisita"] . '</td>
+                                    <td>' . $row["diaEntrada"] . '</td>
+                                  </tr>';
                         }
                     } else {
-                         echo '<div class="container">
-                            No hay visitas POST (Boulevard)
-                          </div>';
+                        echo '<tr><td colspan="9">No hay visitas POST (Boulevard)</td></tr>';
                     }
-                
-                    //$conn->close();
+                    
                 ?>
-            </div>
-            <!-- Contenido del bloque de Visitas Pasadas -->
-        </div>
-    </div>
+            </table>
+    </section>
 
     <script>
         // Función para obtener la fecha y hora actual formateada

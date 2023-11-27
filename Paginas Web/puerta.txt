@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUERTA 1</title>
+    <link rel="icon" href="udg.png" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #f2f2f2;
+            color: #333;
+        }
+        h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 10px;
+            font-size: 16px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .container .fullname {
+            font-size: 30px;
+            color: #333;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .container .highlight-center {
+            font-size: 32px;
+            font-weight: 800;
+            color: #007bff;
+            margin-bottom: 7px;
+        }
+        /* RIGHT AND LEFT */
+        .container .fullname-rl {
+            font-size: 23px;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+        .container .highlight-right, .container .highlight-left {
+            font-size: 25px;
+            font-weight: 600;
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+        .current p {
+            font-size: 18px;
+            margin: 3px;
+            font-weight: 500;
+        }
+        .container p {
+            font-size: 16px;
+            margin: 0px 0;
+        }
+        .double-container {
+            display: flex;
+            justify-content: space-between;
+            /background-color: white;/
+            border-radius: 10px;
+            margin: 0 15px 50px 15px;
+            padding: 10px;
+            /box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);/
+        }
+        .left-block, .right-block {
+            background-color: white;
+            
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+        .center-block {
+            width: 50%;
+            z-index: 10;
+            margin-top: 10px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        .center-block h2, .left-block h2, .right-block h2 {
+            text-align: center;
+            font-size: 2em;
+            font-weight: 600;
+            color: #333;
+        }
+        .left-block {
+            margin-top: 30px; 
+            margin-left: 5px;
+            width: 34%;
+            padding-left: 0px;
+            padding-bottom: 30px;
+        }
+        .right-block {
+            margin-top: 30px; 
+            margin-right: 5px;
+            width: 34%;
+            padding-bottom: 30px;
+        }
+        .current, .preview, .post {
+            margin: 10px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .current {
+            /background-color: rgba(98, 174, 17, 0.503);/
+            background-color: rgba(255, 255, 255, 0.503);
+            padding: 5px;
+            font-weight: 400;
+        }
+        .preview {
+            /background-color: rgba(255, 174, 0, 0.503);/
+            background-color: rgba(255, 255, 255, 0.503);
+            color: black;
+        }
+        .post {
+            /background-color: rgba(255, 0, 0, 0.503);/
+            background-color: rgba(255, 255, 255, 0.503);
+            color: black;
+        }
+        .time {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .titlePuerta {
+            font-size: 3em;
+            color: black;
+            font-weight: 600;
+        }
+        /* BARRA SUPERIOR */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 95%;
+            height: 20%;
+            margin: 20px;
+            background-color: #fff;
+            color: rgb(0, 0, 0);
+            padding: 10px 20px 10px 0;
+            border-radius: 200px;
+        }
+        .top-bar img {
+            height: 20%; /* Ajusta la altura de la imagen según sea necesario */
+            width: 15%;
+            margin-left: 30px;
+        }
+        .top-bar .puerta {
+            font-size: 3em;
+            font-weight: 800;
+            margin-left: 130px;
+        }
+
+        #fechaHora {
+            font-size: 2em;
+            font-weight: 800;
+            color: #000;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <!-- Logo o imagen del lado izquierdo -->
+        <img src="cucei.png" alt="Logo" />
+
+        <!-- Texto en el medio -->
+        <div class="puerta">PUERTA 1</div>
+
+        <!-- Reloj del lado derecho -->
+        <div id="fechaHora"></div>
+    </div>
+
+    <?php
+            date_default_timezone_set('America/Mexico_City');
+            // Datos de conexión
+            $server = "localhost";
+            $user = "id21510609_admin";
+            $password = "#Admin1234";
+            $bd = "id21510609_datos";
+
+            // Crear conexión
+            $cone = new mysqli($server, $user, $password, $bd);
+            
+            // Obtiene la hora actual en formato "H:i"
+            $horaActual = date("H:i");
+            
+            // 15 minutos antes de la hora actual
+            $horaAntes = date("H:i", strtotime("-15 minutes", strtotime($horaActual)));
+            // 5 minutos antes
+            $horaAntes5 = date("H:i", strtotime("-4 minutes", strtotime($horaActual)));
+            // 15 minutos despues de la hora actual
+            $horaDespues = date("H:i", strtotime("+15 minutes", strtotime($horaActual)));
+            // 5 minutos despues
+            $horaDespues5 = date("H:i", strtotime("+4 minutes", strtotime($horaActual)));
+            
+            //echo "Hola eliminar < " . $horaAntes . "<br>";
+            // DELETE
+            $sqlEliminar = "DELETE FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) < '$horaAntes'";
+            $cone->query($sqlEliminar);
+            
+            // Consulta BD para obtener las visitas programadas dentro del rango de tiempo
+            $sqlActual = "SELECT * FROM DatosP WHERE diaEntrada = CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes5' AND '$horaDespues5' AND puertaEntrada = 'Revolucion' ORDER BY TIME(horaEntrada)";
+            //$sqlActual = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND puertaEntrada = 'Revolucion'";
+            $resultActual = $cone->query($sqlActual);
+            
+            $sqlPreview = "SELECT * FROM DatosP WHERE diaEntrada = CURDATE() AND TIME(horaEntrada) BETWEEN '$horaDespues5' AND '$horaDespues' AND puertaEntrada = 'Revolucion' ORDER BY TIME(horaEntrada)";
+            $resultPreview = $cone->query($sqlPreview);
+            
+            $sqlPost = "SELECT * FROM DatosP WHERE diaEntrada = CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes' AND '$horaAntes5' AND puertaEntrada = 'Revolucion' ORDER BY TIME(horaEntrada) desc";
+            $resultPost = $cone->query($sqlPost);
+            
+            // Eliminar las visitas que han pasado más de 15 minutos desde su hora de entrada
+            $sqlEliminar = "DELETE FROM DatosP WHERE DATE(diaEntrada) = CURDATE() AND TIME(horaEntrada) < '$horaAntes'";
+            $cone->query($sqlEliminar);
+
+            // Cierra la conexión
+            //$conn->close();
+            ?>
+
+            
+    <div class="double-container">
+        <div class="left-block">
+            <h2>Visitas Próximas</h2>
+            <div class="preview">
+                <?php
+                    //echo "De: " . $horaDespues5 . " a " . $horaDespues . "<br>";
+                    if ($resultPreview->num_rows > 0) {
+                        while($row = $resultPreview->fetch_assoc()) {
+                            echo '<div class="container">
+                                    <p class="highlight-left">Hora Entrada: ' . $row["horaEntrada"] . '</p>
+                                    <p class="fullname-rl">' . $row["nombre"]  . '</p>
+                                    <p class="fullname-rl" style="margin-bottom: 10px;">' . $row["apellido"] . '</p>
+                                    <p">Detalles</p>
+                                    <p">Modulo: ' . $row["moduloVisita"] . '</p>
+                                    <p">Marca: ' . $row["marcaCarro"] . '</p>
+                                    <p">Placa: ' . $row["placasCarro"] . '</p>
+                                </div>';
+                        }
+                    } else {
+                        echo '<div class="container">
+                                <p style="font-weight: 600; color: #000;">No hay visitas por el momento.</p>
+                            </div>';
+                    }
+                    //$conn->close();
+                ?>
+            </div>
+        </div>
+
+        <div class="center-block">
+            <h2>Visitas Actuales</h2>
+            <div class="current">
+                <?php
+                    //echo "De: " . $horaAntes5 . " a " . $horaDespues5 . "<br>";
+                    if ($resultActual->num_rows > 0) {
+                        while($row = $resultActual->fetch_assoc()) {
+                            echo '<div class="container">
+                                    <p class="highlight-center">Hora Entrada: ' . $row["horaEntrada"] . '</p>
+                                    <p class="fullname">' . $row["nombre"] . ' ' . $row["apellido"] . '</p>
+                                    <p>Detalles</p>
+                                    <p>Modulo: ' . $row["moduloVisita"] . '</p>
+                                    <p>Marca: ' . $row["marcaCarro"] . '</p>
+                                    <p>Placa: ' . $row["placasCarro"] . '</p>
+                                </div>';
+                        }
+                    } else {
+                        echo '<div class="container">
+                                <p style="font-weight: 600; color: #000;">No se esperan visitas.</p>
+                            </div>';
+                    }
+                    //$conn->close();
+                ?>
+            </div>
+        </div>
+        
+        <div class="right-block">
+            <h2>Visitas Pasadas</h2>
+            <div class="post">
+                <?php
+                    //echo "De: " . $horaAntes . " a " . $horaAntes5 . "<br>";
+                    if ($resultPost->num_rows > 0) {
+                        while($row = $resultPost->fetch_assoc()) {
+                            echo '<div class="container">
+                                    <p class="highlight-right">Hora Entrada: ' . $row["horaEntrada"] . '</p>
+                                    <p class="fullname-rl">' . $row["nombre"]  . '</p>
+                                    <p class="fullname-rl" style="margin-bottom: 10px;">' . $row["apellido"] . '</p>
+                                    <p">Detalles</p>
+                                    <p">Modulo: ' . $row["moduloVisita"] . '</p>
+                                    <p">Marca: ' . $row["marcaCarro"] . '</p>
+                                    <p">Placa: ' . $row["placasCarro"] . '</p>
+                                </div>';
+                        }
+                    } else {
+                        echo '<div class="container">
+                                <p style="font-weight: 600; color: #000;">No hay visitas tardías.</p>
+                            </div>';
+                    }
+                    //$conn->close();
+                ?>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function obtenerFechaHora() {
+            var fechaHora = new Date();
+            return fechaHora.toLocaleString('es-ES', { hour12: false });
+        }
+
+        function recargarPagina() {
+            location.reload(true);
+        }
+
+        setTimeout(recargarPagina, 180000);
+
+        var ultimaFechaHora = localStorage.getItem('ultimaFechaHora');
+
+        document.getElementById('fechaHora').innerHTML = ultimaFechaHora || obtenerFechaHora();
+
+        setInterval(function() {
+            var fechaHora = obtenerFechaHora();
+            document.getElementById('fechaHora').innerHTML = fechaHora;
+            localStorage.setItem('ultimaFechaHora', fechaHora);
+        }, 1000);
+    </script>
+</body>
+</html>

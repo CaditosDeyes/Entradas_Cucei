@@ -204,49 +204,50 @@
     </section>
     <?php
         date_default_timezone_set('America/Mexico_City');
-            // Datos de conexión
-            $server = "localhost";
-            $user = "id21510609_admin";
-            $password = "#Admin1234";
-            $bd = "id21510609_datos";
+        // Datos de conexión
+        $server = "localhost";
+        $user = "id21510609_admin";
+        $password = "#Admin1234";
+        $bd = "id21510609_datos";
 
-            // Crear conexión
-            $cone = new mysqli($server, $user, $password, $bd);
+        // Crear conexión
+        $cone = new mysqli($server, $user, $password, $bd);
+        
+        // Obtiene la hora actual en formato "H:i"
+        $horaActual = date("H:i");
+        
+        // 15 minutos antes de la hora actual
+        $horaAntes = date("H:i", strtotime("-15 minutes", strtotime($horaActual)));
+        // 5 minutos antes
+        $horaAntes5 = date("H:i", strtotime("-4 minutes", strtotime($horaActual)));
+        // 15 minutos despues de la hora actual
+        $horaDespues = date("H:i", strtotime("+15 minutes", strtotime($horaActual)));
+        // 5 minutos despues
+        $horaDespues5 = date("H:i", strtotime("+4 minutes", strtotime($horaActual)));
+        
+        //echo "Hola eliminar < " . $horaAntes . "<br>";
+        // DELETE
+        $sqlEliminar = "DELETE FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) < '$horaAntes'";
+        $cone->query($sqlEliminar);
+        
+        // Consulta BD para obtener las visitas programadas dentro del rango de tiempo
+        $sqlActual = "SELECT * FROM DatosP WHERE diaEntrada = CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes5' AND '$horaDespues5' AND puertaEntrada = 'Revolucion' ORDER BY TIME(horaEntrada)";
+        //$sqlActual = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND puertaEntrada = 'Revolucion'";
+        $resultActual = $cone->query($sqlActual);
+        
+        $sqlPreview = "SELECT * FROM DatosP WHERE diaEntrada = CURDATE() AND TIME(horaEntrada) BETWEEN '$horaDespues5' AND '$horaDespues' AND puertaEntrada = 'Revolucion' ORDER BY TIME(horaEntrada)";
+        $resultPreview = $cone->query($sqlPreview);
+        
+        $sqlPost = "SELECT * FROM DatosP WHERE diaEntrada = CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes' AND '$horaAntes5' AND puertaEntrada = 'Revolucion' ORDER BY TIME(horaEntrada) desc";
+        $resultPost = $cone->query($sqlPost);
+        
+        // Eliminar las visitas que han pasado más de 15 minutos desde su hora de entrada
+        $sqlEliminar = "DELETE FROM DatosP WHERE DATE(diaEntrada) = CURDATE() AND TIME(horaEntrada) < '$horaAntes'";
+        $cone->query($sqlEliminar);
 
-            // Obtiene la hora actual en formato "H:i"
-            $horaActual = date("H:i");
-            
-            // 15 minutos antes de la hora actual
-            $horaAntes = date("H:i", strtotime("-15 minutes", strtotime($horaActual)));
-            // 5 minutos antes
-            $horaAntes5 = date("H:i", strtotime("-5 minutes", strtotime($horaActual)));
-            // 15 minutos después de la hora actual
-            $horaDespues = date("H:i", strtotime("+15 minutes", strtotime($horaActual)));
-            // 5 minutos después
-            $horaDespues5 = date("H:i", strtotime("+5 minutes", strtotime($horaActual)));
-            
-            // DELETE
-            $sqlEliminar = "DELETE FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) < '$horaAntes'";
-            $cone->query($sqlEliminar);
-            
-            // Consulta BD para obtener las visitas programadas dentro del rango de tiempo
-            $sqlActual = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes5' AND '$horaDespues5' AND puertaEntrada = 'Revolucion' ORDER BY TIME(horaEntrada)";
-
-            $resultActual = $cone->query($sqlActual);
-            if (!$resultActual) {
-                die("Error en la consulta SQL: " . $cone->error);
-            }
-            
-            $sqlPreview = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) BETWEEN '$horaDespues5' AND '$horaDespues' AND puertaEntrada = 'Revolucion' ORDER BY TIME(horaEntrada)";
-            $resultPreview = $cone->query($sqlPreview);
-            
-            $sqlPost = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes' AND '$horaAntes5' AND puertaEntrada = 'Revolucion' ORDER BY TIME(horaEntrada)";
-            $resultPost = $cone->query($sqlPost);
-            
-            // Eliminar las visitas que han pasado más de 15 minutos desde su hora de entrada
-            $sqlEliminar = "DELETE FROM DatosP WHERE DATE(diaEntrada) = CURDATE() AND TIME(horaEntrada) < '$horaAntes'";
-            $cone->query($sqlEliminar);
-    ?>
+        // Cierra la conexión
+        //$cone->close();
+        ?>
 
     <!-- Segunda sección (Visita Actual) -->
     <section class="current">
@@ -304,15 +305,15 @@
                     if ($resultPreview->num_rows > 0) {
                         while($row = $resultPreview->fetch_assoc()) {
                             echo '<tr>
-                                    <td>' . $row["nombre"] . '</td>
-                                    <td>' . $row["apellido"] . '</td>
-                                    <td>' . $row["marcaCarro"] . '</td>
-                                    <td>' . $row["placasCarro"] . '</td>
-                                    <td>' . $row["colorCarro"] . '</td>
-                                    <td>' . $row["horaEntrada"] . '</td>
-                                    <td>' . $row["moduloVisita"] . '</td>
-                                    <td>' . $row["diaEntrada"] . '</td>
-                                  </tr>';
+                                <td>' . $row["nombre"] . '</td>
+                                <td>' . $row["apellido"] . '</td>
+                                <td>' . $row["marcaCarro"] . '</td>
+                                <td>' . $row["placasCarro"] . '</td>
+                                <td>' . $row["colorCarro"] . '</td>
+                                <td>' . $row["horaEntrada"] . '</td>
+                                <td>' . $row["moduloVisita"] . '</td>
+                                <td>' . $row["diaEntrada"] . '</td>
+                                </tr>';
                         }
                     } else {
                         echo '<tr><td colspan="9">No hay visitas Preview (Revolucion)</td></tr>';
@@ -353,6 +354,7 @@
                     } else {
                         echo '<tr><td colspan="9">No hay visitas POST (Revolucion)</td></tr>';
                     }
+                    
                 ?>
             </table>
     </section>
