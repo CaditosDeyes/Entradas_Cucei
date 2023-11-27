@@ -19,7 +19,7 @@ if(!$cone){
     die("Error al conectar");
 }
 //crear la sentencia
-$sql="INSERT INTO DatosP(nombre,apellido,,placasCarro,colorCarro,horaEntrada,diaEntrada,puertaEntrada,moduloVisita)VALUES('$var1','$var2','$var3','$var4','$var5','$var6','$var7','$var8','$var9')";
+$sql="INSERT INTO DatosP(nombre,apellido,placasCarro,colorCarro,horaEntrada,diaEntrada,puertaEntrada,moduloVisita)VALUES('$var1','$var2','$var3','$var4','$var5','$var6','$var7','$var8','$var9')";
 //ejecutar sentencia
 if(mysqli_query($cone,$sql)){
     echo "1";

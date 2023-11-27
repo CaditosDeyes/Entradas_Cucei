@@ -6,7 +6,7 @@ $password = "#Admin1234";
 $bd = "id21510609_datos";
 
 // Crear conexión
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($server, $user, $password, $bd);
 
 // Verificar la conexión
 if ($conn->connect_error) {
@@ -18,7 +18,7 @@ $nombre = $_GET['nombre'];
 $apellido = $_GET['apellido'];
 
 // Consulta SQL para buscar la cita
-$sql = "SELECT * FROM tu_tabla WHERE nombre = '$nombre' AND apellido = '$apellido'";
+$sql = "SELECT * FROM DatosP WHERE nombre = '$nombre' AND apellido = '$apellido'";
 
 // Ejecutar la consulta
 $result = $conn->query($sql);
