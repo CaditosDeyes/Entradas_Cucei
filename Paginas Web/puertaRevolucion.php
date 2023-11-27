@@ -9,7 +9,7 @@
         body {
             font-family: 'Arial', sans-serif;
             margin: 20px;
-            background-color: #B9C6CA; /* Nuevo color de fondo */
+            background-color: #B9C6CA;
             color: #333;
         }
 
@@ -29,7 +29,7 @@
         .titlePuerta {
             font-size: 2em;
             font-weight: 600;
-            color: #000000; /* Color de texto para el título */
+            color: #000000;
         }
 
         #fechaHora {
@@ -51,7 +51,7 @@
             text-align: center;
             font-size: 1.5em;
             font-weight: 600;
-            color: white; /* Color de texto para el título */
+            color: white;
         }
 
         .container.current {
@@ -63,23 +63,42 @@
             color: #333;
         }
 
-        /* Estilos para la sección de "Visitas Próximas" y "Visitas Pasadas" */
-        .double-container {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .left-block,
-        .right-block {
-            width: 48%;
-            border: 1px solid red;
-            background-color: white;
+        /* Estilos para la sección de "Visitas Próximas" */
+        section.upcoming {
+            background-color: #92FFA9;
+            padding: 20px;
             border-radius: 10px;
-            margin: 15px;
-            padding: 10px;
+            margin-bottom: 20px;
+            overflow-x: hidden; /* Evita el desplazamiento horizontal */
         }
 
-        h2.double {
+        h2.upcoming {
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: 600;
+            color: white;
+        }
+
+        .container.upcoming {
+            border: 1px solid #ddd;
+            margin: 10px auto; /* Centra el contenido horizontalmente */
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 10px;
+            color: #333;
+        }
+
+        /* Estilos para la sección de "Visitas Pasadas" */
+        section.past {
+            background-color: #FF7474;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow-x: hidden; /* Evita el desplazamiento horizontal */
+        }
+
+        h2.past {
             margin-bottom: 10px;
             text-align: center;
             font-size: 1.5em;
@@ -87,9 +106,9 @@
             color: #333;
         }
 
-        .container.double {
+        .container.past {
             border: 1px solid #ddd;
-            margin: 10px;
+            margin: 10px auto; /* Centra el contenido horizontalmente */
             padding: 10px;
             background-color: #fff;
             border-radius: 10px;
@@ -104,7 +123,6 @@
             font-size: 0.8rem;
             width: 100%;
             margin-top: 10px;
-            background-color: #0D51E1;
             color: #000000;
         }
 
@@ -138,25 +156,42 @@
 
         /* Estilos para resaltar las celdas de la tabla actual */
         .current td {
-            background-color: #4CAF50; /* Color verde */
-            color: white;
+            background-color: #74FFF9;
+            color: black;
         }
 
         /* Estilos para resaltar las celdas de las tablas de visitas próximas y pasadas */
-        .container.double th,
-        .container.double td {
-            background-color: #FFC107; /* Color amarillo */
+        .container.upcoming th {
+            background-color: #FFF;
             color: #333;
         }
-        .double {
-        width: 100%;
-        text-align: center;
-    }
 
-    .container.double {
-        width: 80%; /* Puedes ajustar el ancho según tus preferencias */
-        margin: 0 auto; /* Centrar la tabla en la sección */
-    }
+        .container.upcoming td {
+            background-color: #74FFF9;
+            color: black;
+        }
+
+        .container.past th {
+            background-color: #FFF;
+            color: #333;
+        }
+
+        .container.past td {
+            background-color: #74FFF9;
+            color: black;
+        }
+
+        .upcoming,
+        .past {
+            width: 100%;
+            text-align: center;
+        }
+
+        .container.upcoming,
+        .container.past {
+            width: 100%;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -178,13 +213,6 @@
             // Crear conexión
             $cone = new mysqli($server, $user, $password, $bd);
 
-            // Verificar la conexión
-            if ($cone->connect_error) {
-                die("Error en la conexión a la base de datos: " . $cone->connect_error);
-            } else {
-                echo "Conexión exitosa a la base de datos.<br>";
-            }
-            
             // Obtiene la hora actual en formato "H:i"
             $horaActual = date("H:i");
             
@@ -197,15 +225,12 @@
             // 5 minutos después
             $horaDespues5 = date("H:i", strtotime("+5 minutes", strtotime($horaActual)));
             
-            echo "Hola eliminar < " . $horaAntes . "<br>";
             // DELETE
             $sqlEliminar = "DELETE FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) < '$horaAntes'";
             $cone->query($sqlEliminar);
             
             // Consulta BD para obtener las visitas programadas dentro del rango de tiempo
             $sqlActual = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes5' AND '$horaDespues5' AND puertaEntrada = 'Revolucion' ORDER BY TIME(horaEntrada)";
-
-            //$sqlActual = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND puertaEntrada = 'Revolucion'";
 
             $resultActual = $cone->query($sqlActual);
             if (!$resultActual) {
@@ -221,9 +246,6 @@
             // Eliminar las visitas que han pasado más de 15 minutos desde su hora de entrada
             $sqlEliminar = "DELETE FROM DatosP WHERE DATE(diaEntrada) = CURDATE() AND TIME(horaEntrada) < '$horaAntes'";
             $cone->query($sqlEliminar);
-
-            // Cierra la conexión
-            //$conn->close();
     ?>
 
     <!-- Segunda sección (Visita Actual) -->
@@ -263,9 +285,9 @@
     </section>
 
     <!-- Tercera sección (Visitas Próximas y Visitas Pasadas) -->
-    <section class="double">
-        <h2 class="double">Visitas Próximas</h2>
-        <table class="container double">
+    <section class="upcoming">
+        <h2 class="upcoming">Visitas Próximas</h2>
+        <table class="container upcoming">
                 <caption>De: <?php echo $horaDespues5; ?> a <?php echo $horaDespues; ?></caption>
                 <tr>
                     <!-- Encabezados de la tabla -->
@@ -299,9 +321,9 @@
             </table>
     </section>
 
-    <section class="double">
-        <h2 class="double">Visitas Pasadas</h2>
-        <table class="container double">
+    <section class="past">
+        <h2 class="past">Visitas Pasadas</h2>
+        <table class="container past">
                 <caption>De: <?php echo $horaAntes; ?> a <?php echo $horaAntes5; ?></caption>
                 <tr>
                     <!-- Encabezados de la tabla -->
