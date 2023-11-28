@@ -101,6 +101,7 @@
             $password = "#Admin1234";
             $bd = "id21510609_datos";
             $cone = mysqli_connect($server,$user,$password,$bd);
+            // Verificar la conexión
             if (!$cone) {
                 die("Error al conectar: " . mysqli_connect_error());
             } else {
@@ -121,18 +122,19 @@
             
             //echo "Hola eliminar < " . $horaAntes . "<br>";
             // DELETE
-            $sqlEliminar = "DELETE FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) < '$horaAntes'";
+            $sqlEliminar = "DELETE FROM DatosP WHERE diaEntrada = CURDATE() AND TIME(horaEntrada) < '$horaAntes'";
             $cone->query($sqlEliminar);
             
             // Consulta BD para obtener las visitas programadas dentro del rango de tiempo
-            $sqlActual = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes5' AND '$horaDespues5' AND puertaEntrada = 'Olimpica' ORDER BY TIME(horaEntrada)";
-            //$sqlActual = "SELECT * FROM Puertas WHERE DiaEntrada != CURDATE() AND PuertaEntrada = 2";
+            $sqlActual = "SELECT * FROM DatosP WHERE diaEntrada = CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes5' AND '$horaDespues5' AND puertaEntrada = 'Olimpica' ORDER BY TIME(horaEntrada)";
+            //$sqlActual = "SELECT * FROM Puertas WHERE DiaEntrada = CURDATE() AND TIME(HoraEntrada) BETWEEN '$horaAntes5' AND '$horaDespues5' AND PuertaEntrada = 1 ORDER BY TIME(HoraEntrada)";
+            //$sqlActual = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND puertaEntrada = 'Olimpica'";
             $resultActual = $cone->query($sqlActual);
             
-            $sqlPreview = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) BETWEEN '$horaDespues5' AND '$horaDespues' AND puertaEntrada = 'Olimpica' ORDER BY TIME(horaEntrada)";
+            $sqlPreview = "SELECT * FROM DatosP WHERE diaEntrada = CURDATE() AND TIME(horaEntrada) BETWEEN '$horaDespues5' AND '$horaDespues' AND puertaEntrada = 'Olimpica' ORDER BY TIME(horaEntrada)";
             $resultPreview = $cone->query($sqlPreview);
             
-            $sqlPost = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes' AND '$horaAntes5' AND puertaEntrada = 'Olimpica' ORDER BY TIME(horaEntrada)";
+            $sqlPost = "SELECT * FROM DatosP WHERE diaEntrada = CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes' AND '$horaAntes5' AND puertaEntrada = 'Olimpica' ORDER BY TIME(horaEntrada)";
             $resultPost = $cone->query($sqlPost);
             
             // Eliminar las visitas que han pasado más de 15 minutos desde su hora de entrada
