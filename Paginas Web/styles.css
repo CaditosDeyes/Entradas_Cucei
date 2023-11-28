@@ -1,0 +1,95 @@
+/* estilos.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #CBBFBF;
+    color: #333;
+}
+
+h2 {
+    margin-bottom: 10px;
+}
+
+.container {
+    border: 1px solid #ddd;
+    margin: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.horizontal-block {
+    background-color: white;
+    margin: 15px;
+    padding: 10px;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.double-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 10px;
+    margin: 15px 15px 50px 15px;
+    padding: 10px;
+}
+
+.left-block, .right-block {
+    width: 100%;
+    background-color: white;
+}
+
+.horizontal-block h2, .left-block h2, .right-block h2 {
+    text-align: center;
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.time {
+    display: flex;
+    justify-content: space-between;
+}
+
+.titlePuerta {
+    font-size: 4em;
+    color: black;
+    font-weight: 600;
+}
+
+#fechaHora {
+    font-size: 4em;
+    font-weight: bold;
+    color: black;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+caption {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Ajuste para el ancho de la tabla */
+.table-container table {
+    width: 100%;
+}

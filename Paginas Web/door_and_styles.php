@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Puerta Olimpica</title>
+    <title>Puerta Revolucion</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            background-color: #D0D0D0;
+            background-color: #000000;
             color: #333;
 
         }
@@ -89,7 +89,7 @@
 </head>
 <body>
     <div class="time">
-        <div class="titlePuerta">Puerta Olimpica</div>
+        <div class="titlePuerta">Puerta Revolucion</div>
         <div id="fechaHora"></div>
         
     </div> 
@@ -122,13 +122,13 @@
         $cone->query($sqlEliminar);
         
         // Consulta BD para obtener las visitas programadas dentro del rango de tiempo
-        $sqlActual = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes5' AND '$horaDespues5' AND puertaEntrada = 'Olimpica' ORDER BY TIME(horaEntrada)";
+        $sqlActual = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes5' AND '$horaDespues5' AND puertaEntrada = 'Revolucion' ORDER BY TIME(horaEntrada)";
         $resultActual = $cone->query($sqlActual);
         
-        $sqlPreview = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) BETWEEN '$horaDespues5' AND '$horaDespues' AND puertaEntrada = 'Olimpica' ORDER BY TIME(horaEntrada)";
+        $sqlPreview = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) BETWEEN '$horaDespues5' AND '$horaDespues' AND puertaEntrada = 'Revolucion' ORDER BY TIME(horaEntrada)";
         $resultPreview = $cone->query($sqlPreview);
         
-        $sqlPost = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes' AND '$horaAntes5' AND puertaEntrada = 'Olimpica' ORDER BY TIME(horaEntrada)";
+        $sqlPost = "SELECT * FROM DatosP WHERE diaEntrada != CURDATE() AND TIME(horaEntrada) BETWEEN '$horaAntes' AND '$horaAntes5' AND puertaEntrada = 'Revolucion' ORDER BY TIME(horaEntrada)";
         $resultPost = $cone->query($sqlPost);
         
         // Eliminar las visitas que han pasado más de 15 minutos desde su hora de entrada
@@ -172,7 +172,7 @@
                             </tr>';
                     }
                 } else {
-                    echo "<tr><td colspan='9'>No hay visitas actuales (Puerta Olimpica).</td></tr>";
+                    echo "<tr><td colspan='9'>No hay visitas actuales (Puerta Revolucion).</td></tr>";
                 }
 
                 echo '</table>';  // Cierra la etiqueta </table> aquí
@@ -213,7 +213,7 @@
                           </tr>';
                 }
             } else {
-                echo '<tr><td colspan="9">No hay visitas programadas para este periodo (Puerta Olimpica).</td></tr>';
+                echo '<tr><td colspan="9">No hay visitas programadas para este periodo (Puerta Revolucion).</td></tr>';
             }
 
             echo '</table>';
@@ -255,7 +255,7 @@
                           </tr>';
                 }
             } else {
-                echo '<tr><td colspan="9">No hay visitas pasadas (Puerta Olimpica)</td></tr>';
+                echo '<tr><td colspan="9">No hay visitas pasadas (Puerta Revolucion)</td></tr>';
             }
 
             echo '</table>';
